@@ -125,7 +125,7 @@ class AnalyseurSentimentsNLPCloud:
         if len(str(texte).strip()) < 3:
             return "neutre"
         langue = self.api.detecter_langue(texte)
-        return self.api.analyser_expressions_contextuelle(texte, langue)
+        return self.api.analyser_expression_contextuelle(texte, langue)  # CORRIGE ici
 
     def analyser_batch(self, df, col):
         df = df.copy()
