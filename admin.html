@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Sentix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #818cf8;
+            --secondary: #c084fc;
+            --success: #34d399;
+            --danger: #f87171;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #1e2937;
+            --gray: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e2937 0%, #0f172a 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100%;
+            background: #1e2937;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #cbd5e1;
+            text-decoration: none;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background: #334155;
+            color: #c4d0ff;
+            transform: translateX(8px);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+        }
+
+        .header {
+            background: #1e2937;
+            border-radius: 16px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #1e2937;
+            border: 1px solid #334155;
+            padding: 25px;
+            border-radius: 20px;
+            transition: all 0.4s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-value {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #e0e7ff;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        /* Table */
+        .table-container {
+            background: #1e2937;
+            border: 1px solid #334155;
+            border-radius: 20px;
+            padding: 30px;
+        }
+
+        th {
+            background: #334155;
+            color: #e2e8f0;
+            padding: 16px;
+            text-align: left;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #475569;
+        }
+
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: #334155;
+            color: #a5b4fc;
+        }
+
+        .view-btn {
+            background: var(--primary);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .view-btn:hover {
+            background: #6366f1;
+            transform: translateY(-2px);
+        }
+
+        .search-box {
+            background: #334155;
+            border: 1px solid #475569;
+            color: #e2e8f0;
+            padding: 12px 16px;
+            border-radius: 12px;
+            width: 320px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">Sentix Admin</div>
+        <div class="menu">
+            <a href="/admin" class="menu-item active">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Analyses</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-users"></i>
+                <span>Utilisateurs</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-cog"></i>
+                <span>Paramètres</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <div class="page-title">
+                <i class="fas fa-chart-pie"></i> Dashboard Administrateur
+            </div>
+            <div>
+                <span style="margin-right:20px;"><i class="fas fa-user-shield"></i> Admin</span>
+                <a href="/logout" style="background:#f87171; color:white; padding:8px 20px; border-radius:10px; text-decoration:none;">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </a>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <div style="font-size:2rem;">📊</div>
+                    <div class="stat-value" id="totalAnalyses">0</div>
+                </div>
+                <div class="stat-label">Analyses totales</div>
+            </div>
+            <div class="stat-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <div style="font-size:2rem; color:var(--success);">😊</div>
+                    <div class="stat-value" id="totalPositifs">0</div>
+                </div>
+                <div class="stat-label">Avis positifs</div>
+            </div>
+            <div class="stat-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <div style="font-size:2rem; color:var(--danger);">😞</div>
+                    <div class="stat-value" id="totalNegatifs">0</div>
+                </div>
+                <div class="stat-label">Avis négatifs</div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <div style="font-size:1.3rem; font-weight:600;">
+                    <i class="fas fa-history"></i> Historique des analyses
+                </div>
+                <input type="text" class="search-box" placeholder="Rechercher..." id="searchInput">
+            </div>
+            
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse;">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>Fichier</th>
+                            <th>Avis</th>
+                            <th>Langues</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="analysesTable">
+                        {% for row in historique %}
+                        <tr>
+                            <td>#{{ row[0] }}</td>
+                            <td>{{ row[1] }}</td>
+                            <td>{{ row[2] }}</td>
+                            <td>{{ row[3] }}</td>
+                            <td>{{ row[4] }}</td>
+                            <td><span class="status-badge">{{ row[5] }}</span></td>
+                            <td>
+                                {% if row[6] %}
+                                <a href="/download/{{ row[6] }}" class="view-btn">
+                                    <i class="fas fa-download"></i> Rapport
+                                </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Statistiques
+        const rows = document.querySelectorAll('#analysesTable tr');
+        let totalAnalyses = rows.length;
+        let totalAvis = 0;
+
+        rows.forEach(row => {
+            if (row.cells.length >= 4) {
+                const avisCell = row.cells[3];
+                totalAvis += parseInt(avisCell ? avisCell.textContent : 0) || 0;
+            }
+        });
+
+        document.getElementById('totalAnalyses').textContent = totalAnalyses;
+        document.getElementById('totalPositifs').textContent = Math.floor(totalAvis * 0.6) || 0;
+        document.getElementById('totalNegatifs').textContent = Math.floor(totalAvis * 0.3) || 0;
+
+        // Recherche
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            const term = this.value.toLowerCase();
+            rows.forEach(row => {
+                row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>

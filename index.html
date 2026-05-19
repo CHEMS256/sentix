@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentix - Analyseur Intelligent</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #818cf8;
+            --success: #34d399;
+            --danger: #f87171;
+            --warning: #fbbf24;
+            --dark: #0f172a;
+            --light: #1e2937;
+            --gray: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e2937 0%, #0f172a 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: #1e2937;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Upload Section */
+        .upload-section {
+            background: #1e2937;
+            border: 1px solid #334155;
+            border-radius: 20px;
+            padding: 60px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 40px;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--primary);
+            border-radius: 20px;
+            padding: 60px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #334155;
+        }
+
+        .upload-area:hover {
+            border-color: #a5b4fc;
+            background: #475569;
+        }
+
+        .upload-icon {
+            font-size: 4.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        /* Loader */
+        .loader-container {
+            display: none;
+            text-align: center;
+            padding: 60px;
+            background: #1e2937;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border: 1px solid #334155;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #334155;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Results */
+        .results-section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stat-card {
+            background: #1e2937;
+            border: 1px solid #334155;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        /* Table */
+        .results-table-container {
+            background: #1e2937;
+            border: 1px solid #334155;
+            border-radius: 20px;
+            padding: 30px;
+        }
+
+        th {
+            background: #334155;
+            color: #e2e8f0;
+            padding: 15px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #475569;
+        }
+
+        .sentiment-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .sentiment-positif { background: #14532d; color: #6ee7b7; }
+        .sentiment-negatif { background: #7f1d1d; color: #fda4af; }
+        .sentiment-neutre  { background: #78350f; color: #fcd34d; }
+
+        .download-btn {
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-excel { background: #10b981; color: white; }
+        .btn-html  { background: #8b5cf6; color: white; }
+
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="nav-container">
+            <div class="logo"> Sentix</div>
+            <div class="nav-buttons">
+                <a href="/" class="nav-btn">Accueil</a>
+                 &nbsp;&nbsp;&nbsp;
+                <a href="/user_login" class="nav-btn"> Mon espace</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
+        
+        <!-- Upload -->
+        <div class="upload-section" id="uploadSection">
+            <div class="upload-area" id="dropZone">
+                <div class="upload-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <div class="upload-title" style="font-size: 1.6rem; margin-bottom: 10px;">Glissez votre fichier ici</div>
+                <div class="upload-subtitle" style="color: #94a3b8;">Excel (.xlsx, .xls) ou CSV</div>
+                <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display: none;">
+            </div>
+        </div>
+
+        <!-- Loader -->
+        <div class="loader-container" id="loader">
+            <div class="loader"></div>
+            <div style="color: var(--primary); font-weight: 600; font-size: 1.2rem;">Analyse en cours...</div>
+            <div id="loadingText" style="color: #94a3b8; margin-top: 10px;">Traitement des données</div>
+        </div>
+
+        <!-- Résultats -->
+        <div class="results-section" id="resultsSection">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                <div class="stat-card">
+                    <div class="stat-value" id="statTotal">0</div>
+                    <div class="stat-label">Total avis</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" style="color: var(--success);" id="statPos">0</div>
+                    <div class="stat-label">Positifs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" style="color: var(--danger);" id="statNeg">0</div>
+                    <div class="stat-label">Négatifs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" style="color: var(--warning);" id="statNeu">0</div>
+                    <div class="stat-label">Neutres</div>
+                </div>
+            </div>
+
+            <div class="results-table-container">
+                <div style="font-size: 1.4rem; font-weight: 600; margin-bottom: 20px;">
+                    <i class="fas fa-chart-line"></i> Aperçu des résultats
+                </div>
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <th>Avis</th>
+                                <th>Langue</th>
+                                <th>Sentiment</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div style="display: none; justify-content: center; gap: 20px; margin-top: 30px;" id="downloadButtons">
+                <a href="#" id="htmlBtn" class="download-btn btn-html">
+                    <i class="fas fa-file-alt"></i> Télécharger Rapport
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2026 Sentix - Analyse de sentiments par IA</p>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const uploadSection = document.getElementById('uploadSection');
+        const loader = document.getElementById('loader');
+        const resultsSection = document.getElementById('resultsSection');
+        const loadingText = document.getElementById('loadingText');
+
+        function safeSetHref(id, url) {
+            const el = document.getElementById(id);
+            if (el && url) {
+                el.href = url;
+            }
+        }
+
+        dropZone.addEventListener('click', () => fileInput.click());
+        
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+        
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+        
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
+        });
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) handleFile(fileInput.files[0]);
+        });
+
+        function handleFile(file) {
+            uploadSection.style.display = 'none';
+            loader.style.display = 'block';
+            resultsSection.style.display = 'none';
+            loadingText.textContent = `Analyse de ${file.name}...`;
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) throw new Error(data.error);
+                displayResults(data);
+            })
+            .catch(error => {
+                alert('Erreur: ' + error.message);
+                resetUI();
+            });
+        }
+
+        function displayResults(data) {
+            loader.style.display = 'none';
+            resultsSection.style.display = 'block';
+            
+            document.getElementById('statTotal').textContent = data.total || 0;
+            document.getElementById('statPos').textContent = data.distribution?.positif || 0;
+            document.getElementById('statNeg').textContent = data.distribution?.negatif || 0;
+            document.getElementById('statNeu').textContent = data.distribution?.neutre || 0;
+
+            const tbody = document.getElementById('resultsTable');
+            tbody.innerHTML = '';
+
+            if (data.preview) {
+                data.preview.forEach(row => {
+                    const tr = document.createElement('tr');
+                    const text = row.avis && row.avis.length > 100 ? row.avis.substring(0, 100) + '...' : (row.avis || '');
+                    
+                    let sentimentClass = 'sentiment-neutre';
+                    if (row.sentiment_final === 'positif') sentimentClass = 'sentiment-positif';
+                    else if (row.sentiment_final === 'negatif') sentimentClass = 'sentiment-negatif';
+
+                    tr.innerHTML = `
+                        <td title="${(row.avis || '').replace(/"/g, '&quot;')}">${text}</td>
+                        <td>${(row.langue || 'FR').toUpperCase()}</td>
+                        <td><span class="sentiment-badge ${sentimentClass}">${row.sentiment_final}</span></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            document.getElementById('downloadButtons').style.display = 'flex';
+            safeSetHref('excelBtn', data.download_url);
+            safeSetHref('htmlBtn', data.report_url);
+        }
+
+        function resetUI() {
+            loader.style.display = 'none';
+            uploadSection.style.display = 'block';
+            resultsSection.style.display = 'none';
+            fileInput.value = '';
+        }
+    </script>
+</body>
+</html>

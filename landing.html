@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentix - Analyse de sentiments intelligente</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #818cf8;
+            --secondary: #c084fc;
+            --dark: #0f172a;
+            --darker: #020617;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e2937 0%, #0f172a 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(129, 140, 248, 0.15);
+            border-radius: 50%;
+            animation: float 25s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-120px) rotate(180deg); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80vh;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 4.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.35rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+            color: #94a3b8;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: rgba(30, 41, 55, 0.85);
+            border: 1px solid #475569;
+            border-radius: 20px;
+            padding: 45px 35px;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card:hover {
+            transform: translateY(-12px);
+            border-color: var(--primary);
+            background: rgba(51, 65, 85, 0.95);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            margin-bottom: 15px;
+        }
+
+        .btn-outline {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 28px;
+            border: 2px solid var(--primary);
+            color: #e0e7ff;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding-top: 40px;
+            color: #64748b;
+            border-top: 1px solid #334155;
+        }
+    </style>
+</head>
+<body>
+    <!-- Particules en arrière-plan -->
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <div class="main-content">
+            <nav class="navbar">
+                <div class="logo"> Sentix</div>
+            </nav>
+
+            <div class="hero">
+                <h1>Analysez les sentiments<br>avec l'intelligence artificielle</h1>
+                <p>Transformez vos avis clients en insights actionnables grâce à notre IA avancée</p>
+            </div>
+        </div>
+
+        <div class="cards">
+            <div class="card" onclick="location.href='/analyse'">
+                <div class="card-icon">📈</div>
+                <h2>Analyse Instantanée</h2>
+                <p style="color:#94a3b8; line-height:1.6;">Téléchargez vos fichiers Excel ou CSV et obtenez une analyse complète.</p>
+                <span class="btn-outline">Commencer l'analyse →</span>
+            </div>
+           
+            <div class="card" onclick="location.href='/user_login'">
+                <div class="card-icon">👤</div>
+                <h2>Espace Personnel</h2>
+                <p style="color:#94a3b8; line-height:1.6;">Créez un compte pour sauvegarder votre historique d'analyses.</p>
+                <span class="btn-outline">Se connecter →</span>
+            </div>
+           
+            <div class="card" onclick="location.href='/login'">
+                <div class="card-icon">⚙️</div>
+                <h2>Administration</h2>
+                <p style="color:#94a3b8; line-height:1.6;">Accès réservé aux administrateurs pour superviser la plateforme.</p>
+                <span class="btn-outline">Accès Admin →</span>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2026 Sentix - Analyse de sentiments par Intelligence Artificielle</p>
+        </footer>
+    </div>
+
+    <script>
+        // Génération des particules
+        const particlesContainer = document.getElementById('particles');
+        for(let i = 0; i < 50; i++) {
+            let particle = document.createElement('div');
+            particle.classList.add('particle');
+            let size = Math.random() * 8 + 4;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (Math.random() * 20 + 15) + 's';
+            particlesContainer.appendChild(particle);
+        }
+    </script>
+</body>
+</html>
