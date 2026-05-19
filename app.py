@@ -108,14 +108,46 @@ class APIIntelligente:
         except:
             return "fr"
 
-    def analyser_expression_contextuelle(self, texte, langue):
-        if not texte:
-            return "neutre"
-        texte = str(texte).lower()
-        positif = ["bon", "excellent", "super", "génial", "زوين", "مزيان", "good", "great"]
-        negatif = ["mauvais", "nul", "horrible", "خايب", "bad", "worst"]
-        score = sum(1 for w in positif if w in texte) - sum(1 for w in negatif if w in texte)
-        return "positif" if score > 0 else "negatif" if score < 0 else "neutre"
+def analyser_expression_contextuelle(self, texte, langue=None):
+    if not texte:
+        return "neutre"
+    
+    texte = str(texte).lower()
+    
+    positif = [
+        "bon", "excellent", "super", "génial", "parfait", "formidable",
+        "satisfait", "content", "heureux", "ravi", "enthousiaste",
+        "recommande", "recommande fortement", "à ne pas manquer",
+        "fantastic", "brilliant", "impressive", "helpful", "positive",
+        "wonderful", "nice", "awesome", "amazing",
+        "زوين", "مزيان", "إيجابي", "جميل", "رائع", "ممتاز", "مذهل",
+        "لطيف", "مشكور", "أحسنت", "good", "great"
+    ]
+    
+    negatif = [
+        "mauvais", "nul", "horrible", "خايب", "bad", "worst",
+        "déçu", "insatisfait", "médiocre", "inacceptable", "lent",
+        "inutile", "incompétent", "inattentif", "désagréable", "impoli",
+        "problème", "dysfonctionnement", "erreur", "arnaque",
+        "terrible", "awful", "disappointing", "unhelpful", "boring",
+        "ennuyeux", "confusing", "weak", "unacceptable",
+        "سيء", "سيئة", "ضعيف", "غير جيد", "فاشل", "مزعج", "خطير",
+        "لا يعجبني", "غير راضٍ", "تجربة سيئة", "جودة سيئة", "غاضب",
+        "كارثي", "مخيب للآمال", "غير مقبول", "للأسف", "شكوى"
+    ]
+    
+    score_pos = sum(1 for mot in positif if mot in texte)
+    score_neg = sum(1 for mot in negatif if mot in texte)
+    
+    score = score_pos - score_neg
+    
+    if score > 0:
+        return "positif"
+    elif score < 0:
+        return "negatif"
+    else:
+        return "neutre"
+
 
 class AnalyseurSentimentsNLPCloud:
     def __init__(self):
