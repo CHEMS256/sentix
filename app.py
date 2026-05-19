@@ -112,8 +112,8 @@ class APIIntelligente:
         if not texte:
             return "neutre"
         texte = str(texte).lower()
-        positif = ["bon", "excellent", "super", "génial", "زوين", "مزيان", "good", "great","Excellent", "parfait", "formidable","super", "génial","Satisfait", "content","heureux","ravi", "enthousiaste","Recommande", "recommande fortement", "à ne pas manquer","fantastic" ,"brilliant","impressive","helpful","positive","wonderful","nice","awesome","good",  "great", "excellent", " amazing","إيجابي" ,"جميل" ,"رائع" , "ممتاز", "مذهل", "لطيف", "مشكور" , "أحسنت"]
-        negatif = ["mauvais", "nul", "horrible", "خايب", "bad", "worst","Déçu", "insatisfait", "déçu de", "nul"," mauvais", "horrible", "médiocre"," inacceptable","Lent", "long", "inutile", "incompétent", "inattentif", "désagréable", "impoli","Problème", "dysfonctionnement", "erreur", "faux", "faux espoir", "arnaque","bad", "poor,"terrible", "awful", "worst" ,"negative" ,"disappointing" , "unhelpful" , "boring" , "ennuyeux", "confusing" , "weak" , "unacceptable","سيء","سيئة"," ضعيف","غير جيد" ,"فاشل", "مزعج","خطير","لا يعجبني","غير راضٍ","لا أستطيع تحمله", "تجربة سيئة", "جودة سيئة", "غاضب ","غبي" ,"كارثي" ,"مخيب للآمال" ,"غير مقبول","لا"," أبداً" ,"للأسف","مشكلة", "شكوى"]
+        positif = ["bon", "excellent", "super", "génial", "زوين", "مزيان", "good", "great"]
+        negatif = ["mauvais", "nul", "horrible", "خايب", "bad", "worst"]
         score = sum(1 for w in positif if w in texte) - sum(1 for w in negatif if w in texte)
         return "positif" if score > 0 else "negatif" if score < 0 else "neutre"
 
@@ -125,7 +125,7 @@ class AnalyseurSentimentsNLPCloud:
         if len(str(texte).strip()) < 3:
             return "neutre"
         langue = self.api.detecter_langue(texte)
-        return self.api.analyser_expression_contextuelle(texte, langue)  # CORRIGE ici
+        return self.api.analyser_expression_contextuelle(texte, langue)
 
     def analyser_batch(self, df, col):
         df = df.copy()
