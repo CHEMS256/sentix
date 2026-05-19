@@ -135,11 +135,7 @@ def analyser_expression_contextuelle(self, texte, langue=None):
         "لا يعجبني", "غير راضٍ", "تجربة سيئة", "جودة سيئة", "غاضب",
         "كارثي", "مخيب للآمال", "غير مقبول", "للأسف", "شكوى"
     ]
-    
-    score_pos = sum(1 for mot in positif if mot in texte)
-    score_neg = sum(1 for mot in negatif if mot in texte)
-    
-    score = score_pos - score_neg
+    score = sum(1 for w in positif if w in texte) - sum(1 for w in negatif if w in texte)
     
     if score > 0:
         return "positif"
