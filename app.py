@@ -382,8 +382,8 @@ def download_file(filename):
         
         if os.path.exists(filepath):
             return send_file(filepath, as_attachment=True, download_name=filename)
+    
         
-        # Recherche alternative
         for file in Path(app.config["RESULT_FOLDER"]).glob("*"):
             if safe_filename in file.name or filename in file.name:
                 return send_file(file, as_attachment=True, download_name=file.name)
