@@ -187,6 +187,49 @@
             padding: 40px;
             color: #64748b;
         }
+        body{
+    background:#0f172a;
+    font-family:Arial;
+}
+
+.nav-container{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px;
+}
+
+.logo{
+    color:white;
+    font-size:28px;
+    font-weight:bold;
+}
+
+.nav-buttons{
+    display:flex;
+    gap:15px;
+}
+
+.nav-btn{
+    background:#2b3553;
+    color:white;
+
+    padding:15px 25px;
+
+    border-radius:18px;
+
+    text-decoration:none;
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    border:1px solid #4c5a87;
+}
+
+.nav-btn:hover{
+    background:#37456b;
+}
     </style>
 </head>
 <body>
@@ -195,8 +238,10 @@
             <div class="logo"> Sentix</div>
             <div class="nav-buttons">
                 <a href="/" class="nav-btn">Accueil</a>
+                <i class="fas fa-home"></i>
                  &nbsp;&nbsp;&nbsp;
                 <a href="/user_login" class="nav-btn"> Mon espace</a>
+                <i class="fas fa-user"></i>
             </div>
         </div>
     </div>
